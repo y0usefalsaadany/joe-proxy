@@ -38,21 +38,19 @@ class LogMiddleware
         $actionController = explode('@',Route::currentRouteAction()) ?? null;
         $logs->page_name = $request->url();
         $logs->item_id = $item_id;
-        $logs->action = $actionController[1];
+        $logs->action = $actionController[1] ?? null;
         $logs->os = $this->getOS();
         $logs->save();
-        RateLimiter::for('logs', function (Request $request) {
-            return Limit::perMinute(10)->response(function (){
+                if (Log::whereIp($request->ip())->count() > 10){
                 $visitTable = Log::latest()->take(10);
                 $visitTable->delete();
                 $alert = new Alert();
                 $alert->ip = "127.0.0.1";
                 $alert->page_name ="test";
                 $alert->save();
+                $helper = HelperController::manyRequests($request->ip(),$request->url());
                 return abort("403",'TOO MANY REQUESTS');
-            });
-        });
-        $helper = HelperController::manyRequests($request->ip(),$request->url());
+                }
         return $next($request);
     }
 

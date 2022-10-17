@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/joe-proxy', function () {
-    return view('joeProxy::visits');
-})->middleware('throttle:logs','log');
+    return view('joeProxy::joeProxy');
+});
 

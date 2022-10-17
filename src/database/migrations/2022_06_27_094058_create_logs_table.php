@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('page_name');
             $table->string('item_id')->nullable();
-            $table->string('action');
+            $table->string('action')->nullable();
             $table->string('os');
             $table->timestamps();
         });
