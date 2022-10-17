@@ -8,13 +8,11 @@ composer require yousefpackage/visits
 
 in app.php
 
-write this in $routeMiddleware
 
 ```
 'providers' => [
 
-Yousefpackage\Visits\VisitServiceProvider::class,
-Yousefpackage\Visits\RoutePackageServiceProvider::class,
+Yousefpackage\JoeProxy\JoeProxyServiceProvider::class,
 
 ],
 ```
@@ -24,7 +22,7 @@ Yousefpackage\Visits\RoutePackageServiceProvider::class,
 write this in $routeMiddleware
 
 ```
-'visit' => \Yousefpackage\Visits\Http\Middleware\VistsMiddleware::class,
+'jproxy' => \Yousefpackage\JoeProxy\Http\Middleware\LogMiddleware::class,
 ```
 
 # then run this command 
@@ -56,14 +54,14 @@ MAIL_FROM_ADDRESS
 now for test this package goto your browser and write this visits-package
 
 ```
-http://127.0.0.1:8000/visits-package
+http://127.0.0.1:8000/joe-proxy
 ```
 
 # using
 Now Put this middleware on the route you want to calculate the number of views for.
 
 ```
-->middleware('throttle:visit', 'visit');
+->middleware('throttle:logs', 'jproxy');
 ```
 
 like this 
@@ -71,7 +69,7 @@ like this
 ```
 Route::get('/', function () {
     return view('welcome');
-})->middleware('throttle:visit', 'visit');
+})->middleware('throttle:logs', 'jproxy');
 ```
 
 If you want to calculate the number of views you have, make a controller and then put this code
@@ -79,16 +77,17 @@ If you want to calculate the number of views you have, make a controller and the
 ```
 <?php
 
-use Yousefpackage\Visits\Models\Visit;
+use Yousefpackage\JoeProxy\Models\Visit;
+use Yousefpackage\JoeProxy\Models\Alert;
 use Illuminate\Support\Facades\DB;
 
 class ViewsController extends Controller
 {
     function index(){
 
-        return DB::table('visits')->select('ip')->count(); // To count the number of views 
+        return DB::table('logs')->select('ip')->count(); // To count the number of views 
 
-        return Visit::all(); // To display the data in the visits table
+        return Alert::all(); // If you want to know the warnings about requests
     }
 }
 
