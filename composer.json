@@ -1,0 +1,13 @@
+{
+    "name": "yousefpackage/joe-proxy",
+    "description": "This package is for controlling everything related to website visits using the Laravel framework",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Yousefpackage\\JoeProxy\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
