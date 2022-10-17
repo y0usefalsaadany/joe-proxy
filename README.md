@@ -1,7 +1,7 @@
 # install package
 
 ```
-composer require yousefpackage/visits
+composer require yousefpackage/joe-proxy
 ```
 
 # then goto config folder 
