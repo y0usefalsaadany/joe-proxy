@@ -23,7 +23,7 @@ class LogMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $api = Http::get('http://ipwho.is/'. $request->ip());
+        $api = Http::get('http://ipwho.is/156.197.130.130'. $request->ip());
         $data = json_decode($api, true);
         // $parameters = $request->route()->parameters();
         $item_id = null;
@@ -41,16 +41,19 @@ class LogMiddleware
         $logs->action = $actionController[1] ?? null;
         $logs->os = $this->getOS();
         $logs->save();
-                if (Log::whereIp($request->ip())->count() > 10){
-                $visitTable = Log::latest()->take(10);
-                $visitTable->delete();
-                $alert = new Alert();
-                $alert->ip = "127.0.0.1";
-                $alert->page_name ="test";
-                $alert->save();
-                $helper = HelperController::manyRequests($request->ip(),$request->url());
-                return abort("403",'TOO MANY REQUESTS');
-                }
+        $startDate = date("Y-m-d H:i:s");
+        $endDate = date("Y-m-d H:i:s",strtotime('-1 minutes',strtotime($startDate)));
+        if (Log::whereIp($request->ip())->whereBetween('created_at', [$endDate, $startDate])->count() > 5){
+            $visitTable = Log::latest()->take(10);
+            $visitTable->delete();
+            $alert = new Alert();
+            $alert->ip = $request->ip();
+            $alert->page_name = $request->url();
+            $alert->save();
+            $city = $data['city'] ?? null;
+            $helper = HelperController::manyRequests($request->ip(),$request->url(),$city);
+            return abort("403",'TOO MANY REQUESTS');
+        }
         return $next($request);
     }
 

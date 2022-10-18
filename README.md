@@ -61,7 +61,7 @@ http://127.0.0.1:8000/joe-proxy
 Now Put this middleware on the route you want to calculate the number of views for.
 
 ```
-->middleware('throttle:logs', 'jproxy');
+->middleware('jproxy');
 ```
 
 like this 
@@ -69,7 +69,7 @@ like this
 ```
 Route::get('/', function () {
     return view('welcome');
-})->middleware('throttle:logs', 'jproxy');
+})->middleware('jproxy');
 ```
 
 If you want to calculate the number of views you have, make a controller and then put this code

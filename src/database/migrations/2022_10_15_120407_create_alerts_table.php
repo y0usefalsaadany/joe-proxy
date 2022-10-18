@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('alerts', function (Blueprint $table) {
             $table->id();
             $table->ipAddress('ip');
+            $table->string('page_name');
             $table->timestamps();
         });
     }

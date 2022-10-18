@@ -12,11 +12,12 @@ use Yousefpackage\JoeProxy\Mail\AlertMail;
 
 class HelperController extends Controller
 {
-    static function manyRequests($ip,$page){
+    static function manyRequests($ip,$page,$city = null){
         $data = [
             "subject"=>'hello Admin how are you',
             "ip" =>$ip,
-            'page'=>$page
+            'page'=>$page,
+            'city'=>$city
         ];
         Mail::to(env('MAIL_TO'))->send(new AlertMail($data));
     }

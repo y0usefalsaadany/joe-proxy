@@ -11,7 +11,9 @@
       <div class="card-body">
         <h4 class="card-title">Too Many Requests</h4>
         <h6 class="card-subtitle mb-2 text-muted"></h6>
-        <p class="card-text">Many requests on your site by this ip : {{ $data['ip'] }} on this page <a href="{{ $data['page'] }}">Click here</a> , please take the appropriate action to protect your site</p>
+        <p class="card-text">Many requests on your site by this ip : {{ $data['ip'] }} <br>
+         from this city : {{ $data['city'] }} <br>
+         on this page <a href="{{ $data['page'] }}">Click here</a> , please take the appropriate action to protect your site</p>
         <a href="{{ env('APP_URL') }}" class="card-link">Visit website</a>
       </div>
   </div>
