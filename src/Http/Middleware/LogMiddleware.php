@@ -23,7 +23,7 @@ class LogMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $api = Http::get('http://ipwho.is/156.197.130.130'. $request->ip());
+        $api = Http::get('http://ipwho.is/'. $request->ip());
         $data = json_decode($api, true);
         // $parameters = $request->route()->parameters();
         $item_id = null;
