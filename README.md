@@ -77,7 +77,7 @@ If you want to calculate the number of views you have, make a controller and the
 ```
 <?php
 
-use Yousefpackage\JoeProxy\Models\Visit;
+use Yousefpackage\JoeProxy\Models\Log;
 use Yousefpackage\JoeProxy\Models\Alert;
 use Illuminate\Support\Facades\DB;
 
