@@ -9,5 +9,10 @@
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "illuminate/http": "8.x-dev",
+        "illuminate/cache": "8.x-dev",
+        "saedyousef/dataobject": "v1.0.3",
+        "illuminate/database": "8.x-dev"
+    }
 }
