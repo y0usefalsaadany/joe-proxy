@@ -3,9 +3,9 @@
 namespace Yousefpackage\JoeProxy\Http\Middleware;
 
 use Closure;
-use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Response;
 use Yousefpackage\JoeProxy\Models\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -17,12 +17,13 @@ class LogMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Closure(Request): (Response|RedirectResponse) $next
+     * @return Response|RedirectResponse
      */
     public function handle(Request $request, Closure $next)
     {
+        return $next($request);
         $api = Http::get('http://ipwho.is/'. $request->ip());
         $data = json_decode($api, true);
         // $parameters = $request->route()->parameters();
