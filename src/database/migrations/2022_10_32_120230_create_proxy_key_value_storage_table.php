@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('proxy_key_value_storage', function (Blueprint $table) {
             $table->id();
-            $table->ipAddress('ip');
-            $table->string('city')->nullable();
-            $table->string('page_name');
-            $table->string('item_id')->nullable();
-            $table->string('action')->nullable();
-            $table->string('os');
+            $table->string('key');
+            $table->json('value');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('proxy_key_value_storage');
     }
 };
