@@ -3,17 +3,18 @@
 namespace Yousefpackage\JoeProxy\Repositories;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Database\ConnectionResolverInterface;
 use Yousefpackage\JoeProxy\Repositories\Contracts\AlertRepository;
 
-class DatabaseAlertRepository implements AlertRepository
+class DatabaseAlertRepository extends AbstractBaseRepository implements AlertRepository
 {
 
     /**
-     * The key we will use to search and save our logs.
+     * Table name
      *
      * @var string
      */
-    protected string $resourceKey = 'logs';
+    protected string $table = 'alerts';
 
     /**
      * @var Builder
@@ -21,41 +22,28 @@ class DatabaseAlertRepository implements AlertRepository
     private Builder $query;
 
     /**
-     * @var array
+     * @param ConnectionResolverInterface $connectionResolver
      */
-    private array $supportedSearchCriteria = ['id', 'ip', 'os'];
+    public function __construct(ConnectionResolverInterface $connectionResolver)
+    {
+        $this->query = $connectionResolver->connection()
+            ->table($this->table)
+            ->newQuery();
+    }
 
     /**
-     * @param Builder $query
-     * @return void
+     * @return Builder
      */
-    public function setQuery(Builder $query)
+    protected function getQuery(): Builder
     {
-        $this->query = $query;
+        return $this->query;
     }
 
-    public function findBy(array $criteria = [])
+    /**
+     * @return string[]
+     */
+    protected function supportedSearchCriteria(): array
     {
-        $query = $this->query->where('key', '=', $this->resourceKey);
-        $criteria = $this->cleanCriteria($criteria);
-
-        foreach ($criteria as $key => $criterion) {
-            if (is_array($criterion)) {
-                $query->whereIn($key, $criterion);
-                continue;
-            }
-        }
-    }
-
-    protected function cleanCriteria(array $criteria): array
-    {
-        $cleaned = [];
-        foreach ($criteria as $key => $value) {
-            if (key_exists($key, $this->supportedSearchCriteria) && $value) {
-                $cleaned[$key] = $value;
-            }
-        }
-
-        return $cleaned;
+        return ['id', 'ip', 'os'];
     }
 }

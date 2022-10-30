@@ -2,7 +2,7 @@
 
 namespace Yousefpackage\JoeProxy\Repositories\Contracts;
 
-interface LogRepository
+interface LogRepository extends BaseRepository
 {
 
 }

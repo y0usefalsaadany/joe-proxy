@@ -2,7 +2,7 @@
 
 namespace Yousefpackage\JoeProxy\Repositories\Contracts;
 
-interface AlertRepository
+interface AlertRepository extends BaseRepository
 {
 
 }
