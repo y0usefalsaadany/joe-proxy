@@ -39,27 +39,5 @@ class ProxyServiceProvider extends ServiceProvider
         foreach ($this->repositories as $abstract => $concrete) {
             $this->app->bind($abstract, $concrete);
         }
-
-        $query = $this->queryBuilder();
-        foreach ($this->repositories as $repository) {
-            $this->app->afterResolving($repository, function ($instance) use($query) {
-                $instance->setQuery($query);
-            });
-        }
-    }
-
-    /**
-     * @throws BindingResolutionException
-     */
-    private function queryBuilder(): Builder
-    {
-        /** @var ConnectionResolverInterface $connectionInterface */
-        $connectionInterface = $this->app->make(ConnectionResolverInterface::class);
-
-        return $connectionInterface
-            ->connection()
-            ->table('proxy_key_value_storage')
-            ->newQuery()
-            ->where('key');
     }
 }
