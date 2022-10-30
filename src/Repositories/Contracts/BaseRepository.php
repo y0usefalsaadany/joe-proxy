@@ -21,14 +21,8 @@ interface BaseRepository
     public function get(int $id): DataObject;
 
     /**
-     * @param array $data
-     * @return DataObject
-     */
-    public function make(array $data): DataObject;
-
-    /**
-     * @param DataObject $object
+     * @param DataObject $model
      * @return bool
      */
-    public function save(DataObject $object): bool;
+    public function save(DataObject $model): bool;
 }

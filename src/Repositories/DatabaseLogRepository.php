@@ -5,9 +5,10 @@ namespace Yousefpackage\JoeProxy\Repositories;
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Query\Builder;
 use SY\DataObject\Contracts\DataObject;
+use Yousefpackage\JoeProxy\Models\Log;
 use Yousefpackage\JoeProxy\Repositories\Contracts\LogRepository;
 
-class DatabaseLogRepository implements LogRepository
+class DatabaseLogRepository extends AbstractBaseRepository implements LogRepository
 {
     private Builder $query;
 
@@ -25,23 +26,32 @@ class DatabaseLogRepository implements LogRepository
             ->newQuery();
     }
 
-    public function findBy(array $criteria)
+    /**
+     * @return Builder
+     */
+    protected function getQuery(): Builder
     {
-
+        return $this->query;
     }
 
-    public function get(int $id): DataObject
+    /**
+     * @return string[]
+     */
+    protected function supportedSearchCriteria(): array
     {
-
+       return ['id', 'ip', 'os'];
     }
 
-    public function make(array $data): DataObject
+    /**
+     * @param $data
+     * @return DataObject
+     */
+    protected function make($data): DataObject
     {
+        if (!is_array($data)) {
+            $data = (array)$data;
+        }
 
-    }
-
-    public function save(DataObject $object): bool
-    {
-
+        return new Log($data);
     }
 }

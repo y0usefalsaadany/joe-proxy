@@ -2,7 +2,10 @@
 
 namespace Yousefpackage\JoeProxy\Repositories;
 
+use RuntimeException;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Query\Builder;
+use SY\DataObject\Contracts\DataObject;
 use Yousefpackage\JoeProxy\Http\Response\Result;
 
 abstract class AbstractBaseRepository
@@ -32,6 +35,36 @@ abstract class AbstractBaseRepository
         });
     }
 
+    public function get(int $id): DataObject
+    {
+        if(!$model = $this->getQuery()->find($id)) {
+            throw new RuntimeException("No models found with this id #$id");
+        }
+
+        return $this->make($model);
+    }
+
+    /**
+     * @param DataObject $object
+     * @return bool
+     */
+    public function save(DataObject $object): bool
+    {
+        $data = $object->toArray();
+        if ($object->getId()) {
+            if (isset($data['id'])) {
+                unset($data['id']);
+            }
+
+            return $this->getQuery()
+                ->where('id', '=', $object->getId())
+                ->update($data);
+        }
+
+        return $this->getQuery()
+            ->insert($data);
+    }
+
     /**
      * @param array $criteria
      * @return array
@@ -49,6 +82,20 @@ abstract class AbstractBaseRepository
     }
 
     /**
+     * @param array $items
+     * @return Collection<DataObject>
+     */
+    protected function toCollection(array $items): Collection
+    {
+        $models = [];
+        foreach ($items as $item) {
+            $models[] = $this->make($item);
+        }
+
+        return new Collection($models);
+    }
+
+    /**
      * @return Builder
      */
     abstract protected function getQuery(): Builder;
@@ -57,4 +104,10 @@ abstract class AbstractBaseRepository
      * @return array
      */
     abstract protected function supportedSearchCriteria(): array;
+
+    /**
+     * @param array|object $data
+     * @return DataObject
+     */
+    abstract protected function make($data): DataObject;
 }

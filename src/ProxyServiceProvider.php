@@ -2,10 +2,7 @@
 
 namespace Yousefpackage\JoeProxy;
 
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\ConnectionResolverInterface;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Yousefpackage\JoeProxy\Repositories\DatabaseLogRepository;
 use Yousefpackage\JoeProxy\Repositories\DatabaseAlertRepository;
 use Yousefpackage\JoeProxy\Repositories\Contracts\LogRepository;
@@ -30,9 +27,7 @@ class ProxyServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
     }
 
-    /**
-     * @throws BindingResolutionException
-     */
+
     public function register()
     {
         // Binding contracts to repositories.
